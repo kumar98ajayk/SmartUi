@@ -5,7 +5,7 @@ const Service = () => {
   const [data, setData] = useState([]);
   
   useEffect(()=>{
-   // apiFetch();
+
   },[])
   return (
     <>
