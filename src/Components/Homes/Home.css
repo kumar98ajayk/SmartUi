@@ -1,0 +1,29 @@
+.business-card {
+    border: 2px solid #8B4513;
+    border-radius: 10px;
+    padding: 20px;
+    background-color: #ffffff;
+    color: #000000;
+}
+
+.business-card .card-title {
+    color: #8B4513;
+    font-size: 24px;
+}
+
+.business-card p {
+    font-size: 16px;
+}
+
+.business-card a {
+    color: #0000FF;
+    text-decoration: none;
+}
+
+.business-card a:hover {
+    text-decoration: underline;
+}
+
+.business-card img {
+    max-width: 100px;
+}
