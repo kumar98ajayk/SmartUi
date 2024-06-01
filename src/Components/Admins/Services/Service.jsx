@@ -3,20 +3,9 @@ import { Table } from 'react-bootstrap';
 
 const Service = () => {
   const [data, setData] = useState([]);
-  const apiFetch = (prm) => {
-    fetch('', {
-      method: 'post',
-      heder: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(prm)
-    }).then(response => response.json())
-      .then(data => {
-        setData(data);
-      }).catch(error => {
-        console.log(error);
-      })
-  }
+  
   useEffect(()=>{
-    apiFetch();
+   // apiFetch();
   },[])
   return (
     <>

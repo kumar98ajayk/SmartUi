@@ -10,7 +10,7 @@ const Login = () => {
     UserID: '',
     Password: ''
 });
-const onInputChange = e => {
+const onInputChange = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
 };
 const { UserID, Password } = user;
