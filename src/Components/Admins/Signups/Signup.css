@@ -1,0 +1,16 @@
+.container{
+    margin-top: 2% !important;
+    border: ridge 1.5px white !important; 
+    padding: 20px !important;
+    box-sizing: border-box !important;
+    border-radius: 10px !important;
+    width: 100% !important;
+    justify-content: center !important;
+    display: flex !important;
+    font-family: Arial, sans-serif !important;
+    align-items: center;
+    height: 100% !important;
+}
+/* body{
+ background-image: url('https://mdbcdn.b-cdn.net/img/Photos/new-templates/search-box/img4.webp') !important;
+} */

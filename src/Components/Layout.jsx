@@ -7,10 +7,10 @@ export class Layout extends Component {
     return (
       <div>
         <Sidebar />
-        <Container className="container-fluid"> 
+        <Container fluid className="maincontainar" id="maincontainar"> 
           <div>
             {this.props.children}
-          </div>
+          </div> 
         </Container>
       </div>
     );

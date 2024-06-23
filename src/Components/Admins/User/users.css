@@ -1,32 +1,47 @@
-.brd{
+.brd {
     border-radius: 15px !important;
 }
 
 .gradient-custom {
     /* fallback for old browsers */
     background: white;
-    
+
     /* Chrome 10-25, Safari 5.1-6 */
-    
-    }
-    
-    .card-registration .select-input.form-control[readonly]:not([disabled]) {
+
+}
+
+.card-registration .select-input.form-control[readonly]:not([disabled]) {
     font-size: 1rem;
     line-height: 2.15;
     padding-left: .75em;
     padding-right: .75em;
-    }
-    .card-registration .select-arrow {
+}
+
+.card-registration .select-arrow {
     top: 13px;
+}
+
+@media (min-width: 1200px) {
+    .col-xl-7 {
+        flex: 0 0 auto !important;
+        width: 102.333333% !important;
     }
-    @media (min-width: 1200px) {
-        .col-xl-7 {
-            flex: 0 0 auto !important;
-            width: 102.333333% !important;
-        }
-    }
-    /* @media (min-width: 1200px) {
+}
+
+/* @media (min-width: 1200px) {
         .container, .container-lg, .container-md, .container-sm, .container-xl {
             max-width: 1323px !important;
         }
     } */
+.margcontainer {
+    margin-top: 85px !important;
+}
+
+.table-responsive {
+    scrollbar-width: thin !important;
+}
+.txtcolor{
+    border: groove;
+    box-sizing: border-box;
+    background-color: darkgrey;
+}

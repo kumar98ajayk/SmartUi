@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { Table } from 'react-bootstrap';
+import Loader from "react-spinner-loader";
 import './users.css'
 const Users = () => {
+  const [clientid, setClientId] = useState("");
   const [name, setName] = useState("");
   const [lastName, setLastName] = useState("");
   const [emaild, setEmailId] = useState("");
@@ -10,41 +12,45 @@ const Users = () => {
   const [AadharNo, setAadharNo] = useState("");
   const [panNo, setPanNo] = useState("");
   const [selectedGender, setSelectedGender] = useState('M');
-  const [button,setButton]=useState("Submit");
+  const [button, setButton] = useState("Submit");
   const [data, setData] = useState([]);
   const [EmployeeData, setEmployee] = useState([]);
+  const [loader, setLoader] = useState(false);
   const [colID, setColID] = useState("");
-  const [updateData,setupdateData]=useState({
-    FName:'',
-    LastName:'',
-    Email:'',
-    MobileNo:'',
-    Age:'',
-    AadharNo:'',
-    PanNo:'',
-    Gender:'',
+  const [updateData, setupdateData] = useState({
+    ClientId: '',
+    FName: '',
+    LastName: '',
+    Email: '',
+    MobileNo: '',
+    Age: '',
+    AadharNo: '',
+    PanNo: '',
+    Gender: '',
   })
   const handleGenderChange = (e) => {
     handleinputGenderChange(e);
     setSelectedGender(e.target.value);
   };
-const cancelBtn =(e)=>{
-  e.preventDefault();
-  setName("");
-  setLastName("");
-  setEmailId("");
-  setMobileNo("");
-  setAge("");
-  setAadharNo("");
-  setPanNo("");
-  setSelectedGender("");
-  setButton('Submit');
-}
+  const cancelBtn = (e) => {
+    e.preventDefault();
+    setClientId("");
+    setName("");
+    setLastName("");
+    setEmailId("");
+    setMobileNo("");
+    setAge("");
+    setAadharNo("");
+    setPanNo("");
+    setSelectedGender("");
+    setButton('Submit');
+  }
   const SubmitData = (e) => {
     e.preventDefault();
-    if(button=='Submit'){
-      if(name !='' && lastName !='' && emaild !='' && MobleNo !='' && age !='' && selectedGender !='' && AadharNo !='' && panNo !='' ){
+    if (button === 'Submit') {
+      if (name !== '' && lastName !== '' && emaild !== '' && MobleNo !== '' && age !== '' && selectedGender !== '' && AadharNo !== '' && panNo !== '') {
         let prm = {
+          CustomerId: clientid,
           "name": name,
           "lastName": lastName,
           "emailid": emaild,
@@ -57,39 +63,39 @@ const cancelBtn =(e)=>{
         GlobalSearch(prm);
         setButton("Submit");
       }
-      else{
+      else {
         alert(" ALL Filed Requred!!");
       }
-     
+
     }
-    else{
-      let prm1={
-        id:colID,
-       "name": name,
-       "lastName": lastName,
-       "emailid": emaild,
-       "mobileNo": MobleNo,
-       "age": age,
-       "gender": selectedGender,
-       "aadharNo": AadharNo,
-       "panno": panNo
-       }
+    else {
+      let prm1 = {
+        id: colID,
+        "name": name,
+        "lastName": lastName,
+        "emailid": emaild,
+        "mobileNo": MobleNo,
+        "age": age,
+        "gender": selectedGender,
+        "aadharNo": AadharNo,
+        "panno": panNo
+      }
       UpdateUsers(prm1);
       setButton("Update");
 
     }
-   
+
   }
   const UpdateUsers = async (prm1) => {
     console.log(prm1);
-    await fetch('http://SmartApi.somee.com/api/UpdateEmployee/UpdateEmployee',
+    await fetch('https://SmartApi.somee.com/api/UpdateEmployee/UpdateEmployee',
       {
         method: 'Post',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(prm1)
       }).then(response => response.json())
       .then(data => {
-        if (data != 0 || data !== '') {
+        if (data !== 0 || data !== '') {
           setData(data);
           console.log('assgg', data);
           alert("Updated SucessFully !!!");
@@ -102,14 +108,14 @@ const cancelBtn =(e)=>{
   };
   const GlobalSearch = async (prm1) => {
     console.log(prm1);
-    await fetch('http://SmartApi.somee.com/api/RegistraionForm/FranchiseeHoldingReports',
+    await fetch('https://SmartApi.somee.com/api/RegistraionForm/FranchiseeHoldingReports',
       {
         method: 'Post',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(prm1)
       }).then(response => response.json())
       .then(data => {
-        if (data != 0 || data !== '') {
+        if (data !== 0 || data !== '') {
           setData(data);
           console.log('assgg', data);
           alert("Submit SucessFully !!!");
@@ -121,72 +127,81 @@ const cancelBtn =(e)=>{
       });
   };
 
-const FetchData =(e)=>{
-  e.preventDefault();
-  EmployeeFetch();
-}
+  const FetchData = (e) => {
+    e.preventDefault();
+    EmployeeFetch();
+  }
   const EmployeeFetch = async (prm1) => {
     console.log(prm1);
-    await fetch('http://SmartApi.somee.com/api/Employee/EmployeeFetch',
+    setLoader(true);
+    await fetch('https://SmartApi.somee.com/api/Employee/EmployeeFetch',
       {
         method: 'Post',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(prm1)
       }).then(response => response.json())
       .then(data => {
-        if (data != 0 || data !== '') {
+        if (data !== 0 || data !== '') {
           setEmployee(data);
           console.log('assgg', data);
         }
+        setLoader(false);
       })
       .catch(error => {
         console.error(error);
+        setLoader(false);
       });
   };
-  const handleinputFNameChange = (e)=>{
+  const handleinputClientChange = (e) => {
+    if (e !== null || e !== undefined || e !== "") {
+      setupdateData({ ...updateData, "ClientId": e })
+    }
+  }
+  const handleinputFNameChange = (e) => {
     if (e !== null || e !== undefined || e !== "") {
       setupdateData({ ...updateData, "FName": e })
+    }
   }
-  }
-  const handleinputLastNameChange = (e)=>{
+  const handleinputLastNameChange = (e) => {
     if (e !== null || e !== undefined || e !== "") {
       setupdateData({ ...updateData, "LastName": e })
     }
-}
-const handleinputEmailChange = (e)=>{
-  if (e !== null || e !== undefined || e !== "") {
-    setupdateData({ ...updateData, "Email": e })
-}
-}
-const handleinputPhoneChange = (e)=>{
-  if (e !== null || e !== undefined || e !== "") {
-    setupdateData({ ...updateData, "MobileNo": e })
   }
-}
-const handleinputAgeChange = (e)=>{
-  if (e !== null || e !== undefined || e !== "") {
-    setupdateData({ ...updateData, "Age": e })
+  const handleinputEmailChange = (e) => {
+    if (e !== null || e !== undefined || e !== "") {
+      setupdateData({ ...updateData, "Email": e })
+    }
   }
-}
-const handleinputAdharNoChange = (e)=>{
-  if (e !== null || e !== undefined || e !== "") {
-    setupdateData({ ...updateData, "AadharNo": e })
+  const handleinputPhoneChange = (e) => {
+    if (e !== null || e !== undefined || e !== "") {
+      setupdateData({ ...updateData, "MobileNo": e })
+    }
   }
-}
-const handleinputPanNoChange = (e)=>{
-  if (e !== null || e !== undefined || e !== "") {
-    setupdateData({ ...updateData, "PanNo": e })
+  const handleinputAgeChange = (e) => {
+    if (e !== null || e !== undefined || e !== "") {
+      setupdateData({ ...updateData, "Age": e })
+    }
   }
-}
-const handleinputGenderChange = (e)=>{
-  if (e !== null || e !== undefined || e !== "") {
-    setupdateData({ ...updateData, "Gender": e })
+  const handleinputAdharNoChange = (e) => {
+    if (e !== null || e !== undefined || e !== "") {
+      setupdateData({ ...updateData, "AadharNo": e })
+    }
   }
-}
-const editGridData = (e, row) => {
-  e.preventDefault();
-  setupdateData({
+  const handleinputPanNoChange = (e) => {
+    if (e !== null || e !== undefined || e !== "") {
+      setupdateData({ ...updateData, "PanNo": e })
+    }
+  }
+  const handleinputGenderChange = (e) => {
+    if (e !== null || e !== undefined || e !== "") {
+      setupdateData({ ...updateData, "Gender": e })
+    }
+  }
+  const editGridData = (e, row) => {
+    e.preventDefault();
+    setupdateData({
       ...updateData,
+      ClientId: row.customerId,
       FName: row.name,
       LastName: row.lastName,
       Email: row.emailid,
@@ -195,41 +210,57 @@ const editGridData = (e, row) => {
       AadharNo: row.aadharNo,
       PanNo: row.panno,
       Gender: row.gender,
-  });
-  setName(row.name);
-  setLastName(row.lastName);
-  setEmailId(row.emailid);
-  setMobileNo(row.mobileNo);
-  setAge(row.age);
-  setAadharNo(row.aadharNo);
-  setPanNo(row.panno);
-  setSelectedGender(row.gender);
-  setButton('Update');
-}
+    });
+    setColID(row.id);
+    setClientId(row.customerId);
+    setName(row.name);
+    setLastName(row.lastName);
+    setEmailId(row.emailid);
+    setMobileNo(row.mobileNo);
+    setAge(row.age);
+    setAadharNo(row.aadharNo);
+    setPanNo(row.panno);
+    setSelectedGender(row.gender);
+    setButton('Update');
+  }
 
   useEffect(() => {
-   // EmployeeFetch();
+    // EmployeeFetch();
   }, [])
   return (
     <>
       <section className="vh-210 gradient-custom">
-        <div className="container py-1 h-100">
+        <div className="margcontainer h-100">
           <div className="row justify-content-center align-items-center h-80">
-            <div className="col-12 col-lg-9 col-xl-7">
-              <div className="card shadow-2-strong card-registration brd">
-                <div className="card-body p-4 p-md-5">
-                  <h3 className="mb-4 pb-2 pb-md-0 mb-md-5 text-center">Registration Form</h3>
-                  <form>
-                    <div className="row"> 
+            <div className="col-12 col-xl-7 py-1">
+              <div className="card shadow-2-strong card-registration ">
+                <div className="card-body p-1">
+                  <h4 className="mb-4 txtcolor text-center">Registration Form</h4>
+                  <form className='py-0 ps-4 p-3'>
+                    <div className="row mb-sm-0 ">
+                      <div className="col-md-3 mb-4">
+                        <div data-mdb-input-init className="form-outline">
+                          <label className="form-label" for="firstName">ClientId</label>
+                          <input type="text" id="firstName" className="form-control form-control-lg" value={clientid}
+                            onChange={
+                              (e) => {
+                                setClientId(e.target.value);
+                                handleinputClientChange(e);
+                              }}
+                            disabled={button === 'Update'}
+                          />
+                        </div>
+
+                      </div>
                       <div className="col-md-3 mb-4">
                         <div data-mdb-input-init className="form-outline">
                           <label className="form-label" for="firstName">First Name</label>
-                          <input type="text" id="firstName" className="form-control form-control-lg" value={name} 
-                          onChange={
-                            (e) => {
-                            setName(e.target.value);
-                            handleinputFNameChange(e);
-                          }} />
+                          <input type="text" id="firstName" className="form-control form-control-lg" value={name}
+                            onChange={
+                              (e) => {
+                                setName(e.target.value);
+                                handleinputFNameChange(e);
+                              }} />
                         </div>
 
                       </div>
@@ -249,31 +280,34 @@ const editGridData = (e, row) => {
                           <label className="form-label" for="emailAddress">Email</label>
                           <input type="email" id="emailAddress" className="form-control form-control-lg"
                             value={emaild}
-                            onChange={(e) => { setEmailId(e.target.value);
+                            onChange={(e) => {
+                              setEmailId(e.target.value);
                               handleinputEmailChange(e);
-                             }}
+                            }}
 
                           />
                         </div>
                       </div>
+
+                    </div>
+
+                    <div className="row">
                       <div className="col-md-3 mb-4">
                         <div data-mdb-input-init className="form-outline">
                           <label className="form-label" for="phoneNumber">Phone Number</label>
                           <input type="tel" id="phoneNumber" className="form-control form-control-lg"
                             value={MobleNo}
-                            onChange={(e) => { setMobileNo(e.target.value); 
+                            onChange={(e) => {
+                              setMobileNo(e.target.value);
                               handleinputPhoneChange(e);
                             }}
                           />
                         </div>
                       </div>
-                    </div>
-
-                    <div className="row">
                       <div className="col-md-3 mb-4 d-flex align-items-center">
 
                         <div data-mdb-input-init className="form-outline datepicker w-100">
-                          <label for="birthdayDate" className="form-label">Birthday</label>
+                          <label for="birthdayDate" className="form-label">Age</label>
                           <input type="text" className="form-control form-control-lg" id="birthdayDate"
                             value={age}
                             onChange={(e) => {
@@ -310,7 +344,11 @@ const editGridData = (e, row) => {
                         </div>
 
                       </div>
-                      <div className="col-md-3 mb-4">
+
+                    </div>
+
+                    <div className="row">
+                      <div className="col-md-6 mb-4">
                         <h6 className="mb-2 pb-1">Gender: </h6>
 
                         <div className="form-check form-check-inline">
@@ -352,49 +390,54 @@ const editGridData = (e, row) => {
                           <label className="form-check-label" htmlFor="otherGender">Other</label>
                         </div>
                       </div>
-                    </div>
-
-                    <div className="mt-4 pt-2 text-center">
-                      <input data-mdb-ripple-init className="btn btn-primary btn-lg" type="submit"
-                        value={button}
-                        onClick={SubmitData}
-                      />
-                        <input data-mdb-ripple-init className="btn btn-primary btn-lg ms-3" type="submit"
+                      <div className="col-md-6 mt-4">
+                        <div data-mdb-input-init className="form-outline">
+                          <input data-mdb-ripple-init className="btn btn-primary btn-md" type="submit"
+                            value={button}
+                            onClick={SubmitData}
+                          />
+                            <input data-mdb-ripple-init className="btn btn-primary btn-md ms-3" type="submit"
                         value="Fetch"
                         onClick={FetchData}
                       />
-                       <input data-mdb-ripple-init className="btn btn-primary btn-lg ms-3" type="submit"
+                          <input data-mdb-ripple-init className="btn btn-primary btn-md ms-3" type="submit"
                         value="Cancel"
                         onClick={cancelBtn}
                       />
+                        </div>
+                      </div>                  
                     </div>
 
                   </form>
 
                 </div>
+                <Loader show={loader} message="Loading Data" />
                 <div className="table-responsive">
 
                   <Table striped bordered hover>
                     <thead>
                       <tr>
-                        <th>Action</th>
-                        <th>SrNo</th>
-                        <th>First Name</th>
-                        <th>Last Name</th>
-                        <th>Email Id</th>
-                        <th>Mobile No</th>
-                        <th>Age</th>
-                        <th>Gender</th>
-                        <th>AadharNo</th>
-                        <th>panno</th>
+                        <th className='degin text-white text-center'>Action</th>
+                        <th className='degin text-white text-center'>SrNo</th>
+                        <th className='degin text-white text-center'>customer Id</th>
+                        <th className='degin text-white text-center'>First Name</th>
+                        <th className='degin text-white text-center'>Last Name</th>
+                        <th className='degin text-white text-center'>Email Id</th>
+                        <th className='degin text-white text-center'>Mobile No</th>
+                        <th className='degin text-white text-center'>Age</th>
+                        <th className='degin text-white text-center'>Gender</th>
+                        <th className='degin text-white text-center'>AadharNo</th>
+                        <th className='degin text-white text-center'>PanNo</th>
                       </tr>
                     </thead>
                     <tbody>
                       {EmployeeData.map((row, index) => (
-                        <tr key={index}>
+
+                        <tr key={index} className='text-center'>
                           <td>  <a href="#" value={'id'} className="textColo k-link"
-                           onClick={(e) => editGridData(e, row)}>Edit</a></td>
+                            onClick={(e) => editGridData(e, row)}>Edit</a></td>
                           <td>{row.id}</td>
+                          <td>{row.customerId}</td>
                           <td>{row.name}</td>
                           <td>{row.lastName}</td>
                           <td>{row.emailid}</td>

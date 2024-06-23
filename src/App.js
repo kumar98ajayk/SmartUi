@@ -7,6 +7,7 @@ import Users from './Components/Admins/User/Users';
 import Signup from './Components/Admins/Signups/Signup';
 import Service from './Components/Admins/Services/Service';
 import Contact from './Components/Admins/Contacts/Contact';
+import ChangePassword from './Components/ChangePasswords/ChangePassword';
 const App = () => {
   return (
     <BrowserRouter>
@@ -31,7 +32,9 @@ const App = () => {
       <Routes>
         <Route exact path="/Contact" element={(<Layout><Contact /></Layout>)} />
       </Routes>
-      
+      <Routes>
+        <Route exact path="/ChangePassword" element={(<Layout><ChangePassword /></Layout>)} />
+      </Routes>
         </BrowserRouter>
   );
 }
